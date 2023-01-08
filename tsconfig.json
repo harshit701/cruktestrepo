@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["es2020"],
+    "declaration": false,
+    "strict": true,
+    "inlineSourceMap": true,
+    "sourceMap": false,
+    "esModuleInterop": true,
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "exclude": ["cdk.out"]
+}
