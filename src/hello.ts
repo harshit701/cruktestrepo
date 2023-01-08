@@ -34,23 +34,25 @@ export const handler = async (event: APIGatewayEvent) => {
 
         // if file has data
         if (downloadedFile.ContentLength > 0) {
-          const jsonBytes = JSON.parse(downloadedFile.Body.toString("utf-8"));
-          if (!jsonBytes[body.phoneNumber]) {
+          const jsonFileData = JSON.parse(
+            downloadedFile.Body.toString("utf-8")
+          );
+          if (!jsonFileData[body.phoneNumber]) {
             // add key in json
-            jsonBytes[body.phoneNumber] = 1;
+            jsonFileData[body.phoneNumber] = 1;
           } else {
             // increment key value
-            jsonBytes[body.phoneNumber] = jsonBytes[body.phoneNumber] + 1;
+            jsonFileData[body.phoneNumber] += 1;
           }
 
           try {
             await s3upload({
               ...params,
-              Body: JSON.stringify(jsonBytes),
+              Body: JSON.stringify(jsonFileData),
               ContentType: "application/json",
             });
 
-            if (jsonBytes[body.phoneNumber] >= 2) {
+            if (jsonFileData[body.phoneNumber] >= 2) {
               try {
                 // publish message to mobile number
                 await publishMessage({
